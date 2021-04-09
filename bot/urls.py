@@ -20,6 +20,6 @@ from user.views import teleBot
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('webhook/telegrambot/', teleBot, name= "bot")
+    path('telegrambot/', teleBot, name= "bot")
 ]
 
