@@ -1,2 +1,2 @@
 # django-telegram-bot-task1
-Run telegram bot using python telegram bot and django as websever
+Run telegram bot using python telegram bot and django as webserver
