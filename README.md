@@ -11,7 +11,7 @@ Install requirement:
     
  And run:
     
-    $daphne bot.asgi:application
+    $ daphne bot.asgi:application
     
  then you need to go to this urls ``localhost:8000/telegrambot/`` to run bot
  
