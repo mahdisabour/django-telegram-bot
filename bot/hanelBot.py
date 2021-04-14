@@ -10,7 +10,7 @@ class TelegramBot:
     def __init__(self):
         # upadate and dispatcher to handle command and message
         self.updater = Updater(
-            token='1531199489:AAEzccmXBb778Aliqgec9SWS3CgSljAmyV8', use_context=True)
+            token='this is token', use_context=True)
         self.dispatcher = self.updater.dispatcher
 
         self.stateFlag = 0
