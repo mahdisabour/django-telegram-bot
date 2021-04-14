@@ -15,11 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from user.views import teleBot
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('telegrambot/', teleBot, name= "bot")
 ]
 
