@@ -10,13 +10,13 @@ class TelegramBot:
     def __init__(self):
         # upadate and dispatcher to handle command and message
         self.updater = Updater(
-            token='1531199489:AAEzccmXBb778Aliqgec9SWS3CgSljAmyV8', use_context=True)
+            token='1633187717:AAGKkj3HmWy4qs3WQtnWz8mqhdOzoICUiLI', use_context=True)
         self.dispatcher = self.updater.dispatcher
 
         self.stateFlag = 0
 
 
-    def runBot(self):
+    def run(self):
 
         logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                             level=logging.INFO)
