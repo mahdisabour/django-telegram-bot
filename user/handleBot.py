@@ -4,7 +4,6 @@ from telegram.ext import CommandHandler, MessageHandler, Filters
 from user.models import UserBot
 
 
-
 class TelegramBot:
 
     def __init__(self):
@@ -47,6 +46,7 @@ class TelegramBot:
             self.LastName = update.message.text
             context.bot.send_message(
                 chat_id=update.effective_chat.id, text=f"We will register you\nGoodBye")
+
             self.dispatcher.remove_handler(self.echo_handler)
             self.stateFlag = 0
 

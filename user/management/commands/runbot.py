@@ -5,6 +5,7 @@ from user.handleBot import TelegramBot
 class Command(BaseCommand):
     help = "run telegram bot"
 
+
     def handle(self, *args, **kwargs):
         teleBot = TelegramBot()
         teleBot.run()

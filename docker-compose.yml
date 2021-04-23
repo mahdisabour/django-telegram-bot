@@ -2,15 +2,56 @@ version: '3'
 
 services:
 
-    
+    db:
+        image: postgres
+        environment:
+          - POSTGRES_DB=postgres
+          - POSTGRES_USER=mehdi
+          - POSTGRES_PASSWORD=password
+        ports:
+          - "5432:5432"
+
+
+    redis:
+        image: redis:5
+        ports:
+          - "6379:6379"
+
+
     telegrambot:
-        image: telegrambot
-        
-        volumes:
-            - ./db.sqlite3:/usr/src/app/db.sqlite3
+        image: app
+        command: python manage.py runbot
+          
+        depends_on: 
+          - db
+
+        environment:
+          - DB_HOST=db
+          - DB_NAME=postgres
+          - DB_USER=mehdi
+          - DB_PASS=password
+      
+            
     web:
-        build: .
+        image: app
+        command: > 
+          bash -c "python manage.py migrate && daphne -b 0.0.0.0 -p 8000 bot.asgi:application"
+
         volumes:
             - .:/usr/src/app
         ports:
             - "8000:8000"
+
+        environment:
+          - DB_HOST=db
+          - DB_NAME=postgres
+          - DB_USER=mehdi
+          - DB_PASS=password
+          - REDIS_HOST=redis
+          
+        depends_on:
+          - db
+          - redis
+
+        links: 
+          - redis
