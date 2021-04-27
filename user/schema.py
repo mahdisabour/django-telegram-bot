@@ -1,7 +1,6 @@
 import graphene
 from graphene_django import DjangoObjectType
 from rx import Observable
-from .consumer import BotConsumer
 from graphene_subscriptions.events import CREATED
 
 from .models import UserBot

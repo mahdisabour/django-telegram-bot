@@ -16,10 +16,8 @@ django.setup()
 from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter
 # from django.core.asgi import get_asgi_application
-# from user.consumer import BotConsumer
 from django.urls import re_path, path
 from graphene_subscriptions.consumers import GraphqlSubscriptionConsumer
-
 
 
 

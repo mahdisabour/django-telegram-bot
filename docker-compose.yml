@@ -11,47 +11,50 @@ services:
         ports:
           - "5432:5432"
 
-
     redis:
-        image: redis:5
+        image: redis:latest
         ports:
           - "6379:6379"
 
 
-    telegrambot:
-        image: app
-        command: python manage.py runbot
+    # telegrambot:
+    #     image: app
+    #     command: python manage.py runbot
           
-        depends_on: 
-          - db
+    #     depends_on: 
+    #       - db
 
-        environment:
-          - DB_HOST=db
-          - DB_NAME=postgres
-          - DB_USER=mehdi
-          - DB_PASS=password
+    #     environment:
+    #       - DB_HOST=db
+    #       - DB_NAME=postgres
+    #       - DB_USER=mehdi
+    #       - DB_PASS=password
       
             
     web:
         image: app
         command: > 
-          bash -c "python manage.py migrate && daphne -b 0.0.0.0 -p 8000 bot.asgi:application"
-
+          bash -c "python manage.py makemigrations && python manage.py migrate && daphne -b 0.0.0.0 -p 8000 bot.asgi:application"
         volumes:
             - .:/usr/src/app
         ports:
             - "8000:8000"
-
         environment:
           - DB_HOST=db
           - DB_NAME=postgres
           - DB_USER=mehdi
           - DB_PASS=password
           - REDIS_HOST=redis
-          
         depends_on:
           - db
           - redis
-
         links: 
+          - redis
+
+    celery:
+        restart: always
+        image: app
+        command: celery -A bot worker --loglevel=debug --concurrency=4
+        depends_on:
+          - db
           - redis

@@ -55,6 +55,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'bot.urls'
@@ -81,14 +82,22 @@ WSGI_APPLICATION = 'bot.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+# DATABASES = {
+#   'default': {
+#     'ENGINE': 'django.db.backends.postgresql',
+#     'HOST': os.environ.get('DB_HOST'),
+#     'NAME': os.environ.get('DB_NAME'),
+#     'USER': os.environ.get('DB_USER'),
+#     'PASSWORD': os.environ.get('DB_PASS'),
+#   }
+# }
+
+
 DATABASES = {
-  'default': {
-    'ENGINE': 'django.db.backends.postgresql',
-    'HOST': os.environ.get('DB_HOST'),
-    'NAME': os.environ.get('DB_NAME'),
-    'USER': os.environ.get('DB_USER'),
-    'PASSWORD': os.environ.get('DB_PASS'),
-  }
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 
 # Password validation
@@ -155,3 +164,10 @@ GRAPHENE = {
  "SUBSCRIPTION_PATH": "/graphql/"
 }
 
+
+# REDIS related settings 
+REDIS_HOST = 'redis'
+REDIS_PORT = '6379'
+BROKER_URL = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
+BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600} 
+CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'

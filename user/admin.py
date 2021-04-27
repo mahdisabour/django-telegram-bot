@@ -1,7 +1,12 @@
 from django.contrib import admin
-from .models import UserBot
+from .models import UserBot, VipMembers
 # Register your models here.
 
 @admin.register(UserBot)
-class UserAdminO(admin.ModelAdmin):
+class UserAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(VipMembers)
+class VipMemberAdmin(admin.ModelAdmin):
     pass

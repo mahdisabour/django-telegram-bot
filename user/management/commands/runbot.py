@@ -8,5 +8,5 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         teleBot = TelegramBot()
-        teleBot.run()
+        teleBot.main()
         print("hello django bot")
