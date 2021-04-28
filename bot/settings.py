@@ -181,7 +181,7 @@ from .celery import app
 app.conf.beat_schedule = {
     'add-every-30-seconds': {
         'task': 'user.tasks.sendPeriodicMessage',
-        'schedule': 10.0,
+        'schedule': 60.0,
         'args': ()
     },
 }

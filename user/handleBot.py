@@ -162,10 +162,11 @@ class TelegramBot:
                         int(self.birthConfigDict["day"]) 
                     ).togregorian()
                 else:
-                    time = datetime.datetime(
+                    time = datetime.date(
                         int(self.birthConfigDict["year"]), 
                         int(self.birthConfigDict["month"]), 
-                        int(self.birthConfigDict["day"]))
+                        int(self.birthConfigDict["day"])
+                    )
             except Exception as e:
                 print(e)
                 update.message.reply_text(
@@ -174,6 +175,14 @@ class TelegramBot:
                 )
                 return ConversationHandler.END
 
+            # ### time compare 
+            # if (datetime.today() >= time):
+            #     update.message.reply_text(
+            #         'لطفا تاریخ تولد خود را به درستی وارد کنید',
+            #         reply_markup=ReplyKeyboardRemove(),
+            #     )
+                
+            #     return ConversationHandler.END
 
             try: 
                 instance = VipMembers(

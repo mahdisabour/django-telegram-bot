@@ -8,9 +8,10 @@ from .models import VipMembers
 
 @app.task
 def sendPeriodicMessage():
-    for instance in VipMembers.objects.values('telegram_id').distinct():
-        if (instance['telegram_id']):
-            sendMessageFromBot.delay(instance['telegram_id'])
+    pass
+    # for instance in VipMembers.objects.values('telegram_id').distinct():
+    #     if (instance['telegram_id']):
+    #         sendMessageFromBot.delay(instance['telegram_id'])
 
 
 @app.task
