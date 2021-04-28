@@ -17,18 +17,26 @@ services:
           - "6379:6379"
 
 
-    # telegrambot:
-    #     image: app
-    #     command: python manage.py runbot
+    telegrambot:
+        image: app
+        command: python manage.py runbot
           
-    #     depends_on: 
-    #       - db
+        depends_on: 
+          - db
+          - web
+          - redis
 
-    #     environment:
-    #       - DB_HOST=db
-    #       - DB_NAME=postgres
-    #       - DB_USER=mehdi
-    #       - DB_PASS=password
+        links: 
+          - redis
+
+        volumes:
+          - .:/usr/src/app
+
+        environment:
+          - DB_HOST=db
+          - DB_NAME=postgres
+          - DB_USER=mehdi
+          - DB_PASS=password
       
             
     web:
@@ -54,7 +62,31 @@ services:
     celery:
         restart: always
         image: app
-        command: celery -A bot worker --loglevel=debug --concurrency=4
+        command: celery -A bot worker --loglevel=debug --concurrency=8
         depends_on:
           - db
           - redis
+        volumes:
+          - .:/usr/src/app
+        environment:
+          - DB_HOST=db
+          - DB_NAME=postgres
+          - DB_USER=mehdi
+          - DB_PASS=password
+          
+
+    celery-beat:
+      restart: always
+      image: app
+      command: celery -A bot beat -l info
+      depends_on:
+        - db
+        - redis
+      volumes:
+        - .:/usr/src/app
+
+      environment:
+        - DB_HOST=db
+        - DB_NAME=postgres
+        - DB_USER=mehdi
+        - DB_PASS=password

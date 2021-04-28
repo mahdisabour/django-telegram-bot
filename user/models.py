@@ -25,7 +25,7 @@ class VipMembers(models.Model):
     phone_number = models.CharField(blank=True, null=True, unique=True, max_length=11, validators=[MinLengthValidator(11)])
     telegram_id = models.CharField(max_length=200, blank=True, null=True)
     email = models.EmailField(max_length=200, blank=True, null=True)
-    date_of_birth = models.DateTimeField(blank=True, null=True)
+    date_of_birth = models.DateField(blank=True, null=True)
     STATUS = [
         ('instagram', 'ارتباط از اینستا'),
         ('subscribed', 'عضو کانال'),

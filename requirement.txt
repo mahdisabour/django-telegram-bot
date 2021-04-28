@@ -43,6 +43,7 @@ hiredis==2.0.0
 hyperlink==21.0.0
 idna==2.10
 incremental==21.3.0
+jdatetime==3.6.2
 kombu==5.0.2
 msgpack==1.0.2
 msgpack-python==0.5.6
