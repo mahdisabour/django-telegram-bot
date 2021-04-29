@@ -13,9 +13,10 @@ from telegram.ext import (
 )
 
 from django.core.exceptions import ValidationError
-from .models import VipMembers
+from user.models import VipMembers
+from django.conf import settings
 
-from .tasks import sendMessageFromBot
+from user.tasks import sendMessageFromBot
 
 
 
@@ -234,7 +235,7 @@ class TelegramBot:
     def main(self):
         # Create the Updater and pass it your bot's token.
         updater = Updater(
-            token='1633187717:AAGKkj3HmWy4qs3WQtnWz8mqhdOzoICUiLI')
+            token=settings.TOKEN)
         # Get the dispatcher to register handlers
         dispatcher = updater.dispatcher
         conv_handler = ConversationHandler(

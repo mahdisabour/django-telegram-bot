@@ -82,23 +82,23 @@ WSGI_APPLICATION = 'bot.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-  'default': {
-    'ENGINE': 'django.db.backends.postgresql',
-    'HOST': os.environ.get('DB_HOST'),
-    'NAME': os.environ.get('DB_NAME'),
-    'USER': os.environ.get('DB_USER'),
-    'PASSWORD': os.environ.get('DB_PASS'),
-  }
-}
-
-
 # DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
+#   'default': {
+#     'ENGINE': 'django.db.backends.postgresql',
+#     'HOST': os.environ.get('DB_HOST'),
+#     'NAME': os.environ.get('DB_NAME'),
+#     'USER': os.environ.get('DB_USER'),
+#     'PASSWORD': os.environ.get('DB_PASS'),
+#   }
 # }
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -181,8 +181,13 @@ from .celery import app
 app.conf.beat_schedule = {
     'add-every-30-seconds': {
         'task': 'user.tasks.sendPeriodicMessage',
-        'schedule': 60.0,
+        'schedule': 120.0,
         'args': ()
     },
 }
 app.conf.timezone = 'UTC'
+
+
+# bot config
+
+BOT_URL = "this is bot url"

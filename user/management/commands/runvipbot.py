@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
-from user.handleBot import TelegramBot
+from user.bots.handleVipBot import TelegramBot
 
 
 class Command(BaseCommand):
