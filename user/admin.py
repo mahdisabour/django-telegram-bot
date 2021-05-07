@@ -1,15 +1,6 @@
 from django.contrib import admin
-from .models import UserBot, VipMembers, SiteBotMember
+from .models import SiteBotMember
 # Register your models here.
-
-@admin.register(UserBot)
-class UserAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(VipMembers)
-class VipMemberAdmin(admin.ModelAdmin):
-    list_display = ['email', 'phone_number', 'telegram_id']
 
 
 @admin.register(SiteBotMember)

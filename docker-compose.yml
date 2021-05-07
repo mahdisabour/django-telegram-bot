@@ -1,15 +1,17 @@
-version: '3'
+version: '3.7'
 
 services:
-
     db:
-        image: postgres
+        image: postgres:13.0-alpine
         environment:
           - POSTGRES_DB=postgres
           - POSTGRES_USER=mehdi
           - POSTGRES_PASSWORD=password
         ports:
           - "5432:5432"
+        volumes:
+          - postgres_data:/var/lib/postgresql/data/
+
 
     redis:
         image: redis:latest
@@ -17,30 +19,7 @@ services:
           - "6379:6379"
 
 
-    # telegramVipBot:
-    #     image: app
-    #     command: python manage.py runvipbot
-          
-    #     depends_on: 
-    #       - db
-    #       - web
-    #       - redis
-
-    #     links: 
-    #       - redis
-
-    #     volumes:
-    #       - .:/usr/src/app
-
-    #     environment:
-    #       - DB_HOST=db
-    #       - DB_NAME=postgres
-    #       - DB_USER=mehdi
-    #       - DB_PASS=password
-      
-
-
-    telegramSiteBot:
+    telegramsitebot:
       image: app
       command: python manage.py runsitebot
         
@@ -49,25 +28,23 @@ services:
         - web
         - redis
 
-      links: 
-        - redis
-
-      volumes:
-        - .:/usr/src/app
-
       environment:
         - DB_HOST=db
         - DB_NAME=postgres
         - DB_USER=mehdi
         - DB_PASS=password
 
+      volumes: 
+        - .:/home/app/web
+
             
     web:
         image: app
         command: > 
-          bash -c "python manage.py makemigrations && python manage.py migrate && daphne -b 0.0.0.0 -p 8000 bot.asgi:application"
+          sh -c "python manage.py makemigrations && python manage.py migrate && daphne -b 0.0.0.0 -p 8000 bot.asgi:application"
         volumes:
-            - .:/usr/src/app
+            - static_volume:/home/app/web/staticfiles
+            - .:/home/app/web
         ports:
             - "8000:8000"
         environment:
@@ -91,7 +68,7 @@ services:
           - redis
           - web
         volumes:
-          - .:/usr/src/app
+          - celery_data:/var/lib/celery/data/
         environment:
           - DB_HOST=db
           - DB_NAME=postgres
@@ -100,18 +77,23 @@ services:
 
 
     celery-beat:
-      restart: always
-      image: app
-      command: celery -A bot beat -l info
-      depends_on:
-        - db
-        - redis
-        - web
-      volumes:
-        - .:/usr/src/app
+        restart: always
+        image: app
+        command: celery -A bot beat -l info
+        depends_on:
+          - db
+          - redis
+          - web
+        volumes:
+          - celery_data:/var/lib/celery/data/
 
-      environment:
-        - DB_HOST=db
-        - DB_NAME=postgres
-        - DB_USER=mehdi
-        - DB_PASS=password
+        environment:
+          - DB_HOST=db
+          - DB_NAME=postgres
+          - DB_USER=mehdi
+          - DB_PASS=password
+
+volumes:
+    postgres_data:
+    static_volume:
+    celery_data:

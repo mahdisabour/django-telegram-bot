@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
-
+from celery.schedules import crontab
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -42,9 +42,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     
     'user',
-    'channels',
-    'graphene_django',
-    'graphene_subscriptions',
 ]
 
 MIDDLEWARE = [
@@ -82,23 +79,23 @@ WSGI_APPLICATION = 'bot.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-# DATABASES = {
-#   'default': {
-#     'ENGINE': 'django.db.backends.postgresql',
-#     'HOST': os.environ.get('DB_HOST'),
-#     'NAME': os.environ.get('DB_NAME'),
-#     'USER': os.environ.get('DB_USER'),
-#     'PASSWORD': os.environ.get('DB_PASS'),
-#   }
-# }
-
-
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+  'default': {
+    'ENGINE': 'django.db.backends.postgresql',
+    'HOST': os.environ.get('DB_HOST'),
+    'NAME': os.environ.get('DB_NAME'),
+    'USER': os.environ.get('DB_USER'),
+    'PASSWORD': os.environ.get('DB_PASS'),
+  }
 }
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -136,8 +133,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_URL = '/staticfiles/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -148,22 +145,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Channels
 ASGI_APPLICATION = 'bot.asgi.application'
 
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            "hosts": [('redis', 6379)],
-        },
-    },
-}
-
-
-# graphql
-GRAPHENE = {
- "SCHEMA": "user.schema.schema",
- "SUBSCRIPTION_PATH": "/graphql/"
-}
-
 
 # REDIS related settings 
 REDIS_HOST = 'redis'
@@ -173,15 +154,13 @@ BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}
 CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
 
 
-# telegram Token
-TOKEN = '1633187717:AAGKkj3HmWy4qs3WQtnWz8mqhdOzoICUiLI'
 
 from .celery import app
 
 app.conf.beat_schedule = {
-    'add-every-30-seconds': {
+    'add-every-120-seconds': {
         'task': 'user.tasks.sendPeriodicMessage',
-        'schedule': 120.0,
+        'schedule': crontab(minute='*/15'),
         'args': ()
     },
 }
@@ -189,5 +168,6 @@ app.conf.timezone = 'UTC'
 
 
 # bot config
-
-BOT_URL = "this is bot url"
+BOT_URL = "Amirbayat_bot"
+# telegram Token
+TOKEN = '1744267923:AAFfKUpT4IkAAa76trvzggrTEmjq9dw2vWo'

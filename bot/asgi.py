@@ -9,24 +9,11 @@ https://docs.djangoproject.com/en/3.2/howto/deployment/asgi/
 
 import os
 import django
+from django.core.asgi import get_asgi_application
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'bot.settings')
 django.setup()
 
 
-from channels.auth import AuthMiddlewareStack
-from channels.routing import ProtocolTypeRouter, URLRouter
 # from django.core.asgi import get_asgi_application
-from django.urls import re_path, path
-from graphene_subscriptions.consumers import GraphqlSubscriptionConsumer
 
-
-
-
-application = ProtocolTypeRouter({
-  "websocket": AuthMiddlewareStack(
-        URLRouter([
-            path("graphql/", GraphqlSubscriptionConsumer),
-        ])
-    ),
-})
-
+application = get_asgi_application()

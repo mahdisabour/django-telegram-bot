@@ -35,11 +35,11 @@ class TelegramSiteBot:
         
         if (SiteBotMember.objects.filter(chat_id=self.chat_id).exists()):
             update.message.reply_text(
-                'شما قبلا در بات ثبت نام کرده اید لازم نیست مجدد این کار را انجام دهید',
+                'این شماره قبلا در بات ثبت نام کرده است لازم نیست مجدد این کار را انجام دهید',
             )
             return ConversationHandler.END
+            
         else:
-
             update.message.reply_text(
                 'سلام . برای این که از خدمات بات تلگرام سایت استفاده کنید لطفا شماره تلفن خود را وارد کنید '
                 'برای خارج شدن  /cancel را بفرستید\n\n'
@@ -56,11 +56,16 @@ class TelegramSiteBot:
 
         if(SiteBotMember.objects.filter(phone_number=phone_number).exists()):
             instance = SiteBotMember.objects.get(phone_number=phone_number)
-            instance.chat_id = self.chat_id
-            instance.save()
-            update.message.reply_text(
-                'شما اکنون از امکانات سایت بهره مند شده اید',
-            )
+            if (not instance.chat_id):
+                instance.chat_id = self.chat_id
+                instance.save()
+                update.message.reply_text(
+                    'شما اکنون از امکانات سایت بهره مند شده اید',
+                )
+            else:
+                update.message.reply_text(
+                    'این شماره قبلا در این بات ثبت نام کرده است',
+                )
         else:
             update.message.reply_text(
                 'کاربری با این شماره تلفن هنوز در سایت ثبت نام نکرده است لطفا ابتدا در سایت ثبت نام کنید و یک سفارش ثبت کنید',

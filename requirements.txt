@@ -1,0 +1,7 @@
+celery==5.0.5
+daphne==2.5.0
+Django==3.2
+jdatetime==3.6.2
+python-telegram-bot==13.4.1
+redis==3.5.3
+whitenoise==5.2.0
