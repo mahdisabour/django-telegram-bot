@@ -13,7 +13,7 @@ RUN mkdir $APP_HOME/staticfiles
 
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONUNBUFFERED 1 
 
 COPY ./requirements.txt $APP_HOME
 

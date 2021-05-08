@@ -19,6 +19,6 @@ from user.views import orderCreated
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('webhook/order-created/', orderCreated)
+    path('webhook/ordercreated/', orderCreated)
 ]
 

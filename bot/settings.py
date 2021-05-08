@@ -158,9 +158,14 @@ CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
 from .celery import app
 
 app.conf.beat_schedule = {
-    'add-every-120-seconds': {
+    'send-every-day': {
         'task': 'user.tasks.sendPeriodicMessage',
-        'schedule': crontab(minute='*/15'),
+        'schedule': crontab(minute=0, hour='*/3'),
+        'args': ()
+    },
+    'chech-expire-every-day': {
+        'task': 'user.tasks.checkExpireDate',
+        'schedule': crontab(minute=0, hour=0),
         'args': ()
     },
 }

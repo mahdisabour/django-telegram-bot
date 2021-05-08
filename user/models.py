@@ -10,5 +10,20 @@ class SiteBotMember(models.Model):
 
 
     def __str__(self):
-        return f"{self.customer_id}"
+        return f"{self.phone_number}"
+
+
+class ProductPlan(models.Model):
+    product_id = models.BigIntegerField()
+    product_name = models.CharField(max_length=500)
+    owner = models.ForeignKey(SiteBotMember, on_delete=models.CASCADE, related_name='orders')
+    plan = models.CharField(max_length=50)
+    created_date = models.DateField(auto_now_add=True)
+    expiration_date = models.DateField(auto_now_add=False)
+
+    def __str__(self):
+        return self.plan
+
+    
+    
     

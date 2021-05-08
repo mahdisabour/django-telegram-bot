@@ -69,6 +69,7 @@ services:
           - web
         volumes:
           - celery_data:/var/lib/celery/data/
+          - .:/home/app/web
         environment:
           - DB_HOST=db
           - DB_NAME=postgres
@@ -86,6 +87,7 @@ services:
           - web
         volumes:
           - celery_data:/var/lib/celery/data/
+          - .:/home/app/web
 
         environment:
           - DB_HOST=db
