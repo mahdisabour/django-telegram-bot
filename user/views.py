@@ -65,8 +65,8 @@ def orderCreated(request):
                 # ["amount", "type"]
                 subPlan = plan.split('_')
                 product_id = product['product_id']
-                days = int(subPlan[0]) if subPlan[-1] == 'days' else int(subPlan[0])*30
-                if (ProductPlan.objects.filter(product_id=product_id).exists()):
+                days = int(subPlan[-1]) if subPlan[0] == 'days' else int(subPlan[-1])*30
+                if (ProductPlan.objects.filter(product_id=product_id, owner=user).exists()):
                     ProductPlan.objects.get(product_id=product_id).expiration_date = datetime.date.today()+datetime.timedelta(days=days)
                 else:
                     ProductPlan(product_id=product_id, product_name=name, expiration_date=datetime.date.today()+datetime.timedelta(days=days), owner=user, plan=plan).save()

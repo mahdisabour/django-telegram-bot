@@ -32,14 +32,14 @@ def checkExpireDate():
 
 # check expirations date to send them message
 def hasValidExpire(date):
-    if datetime.date.today() > data - datetime.timedelta(days=4):
+    if datetime.date.today() > date - datetime.timedelta(days=4):
         return False
     return True
 
 
 # check time to kill user
 def overFlowTime(date):
-    if datetime.date.today() > data:
+    if datetime.date.today() > date :
         return True
     return False
 

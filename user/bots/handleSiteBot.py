@@ -53,6 +53,7 @@ class TelegramSiteBot:
         user = update.message.from_user
         self.logger.info("Phone Number of %s: %s", user.first_name, update.message.text)
         phone_number = update.message.text
+        reply_keyboard = [['وارد کردن مجدد شماره:']]
 
         if(SiteBotMember.objects.filter(phone_number=phone_number).exists()):
             instance = SiteBotMember.objects.get(phone_number=phone_number)
@@ -61,16 +62,24 @@ class TelegramSiteBot:
                 instance.save()
                 update.message.reply_text(
                     'شما اکنون از امکانات سایت بهره مند شده اید',
+                    reply_markup=ReplyKeyboardRemove()
                 )
             else:
                 update.message.reply_text(
                     'این شماره قبلا در این بات ثبت نام کرده است',
+                    reply_markup=ReplyKeyboardRemove()
                 )
         else:
             update.message.reply_text(
-                'کاربری با این شماره تلفن هنوز در سایت ثبت نام نکرده است لطفا ابتدا در سایت ثبت نام کنید و یک سفارش ثبت کنید',
+                'کاربری با این شماره تلفن هنوز در سایت ثبت نام نکرده است لطفا ابتدا در سایت ثبت نام کنید و یک سفارش ثبت کنید . لطفا مجدد شماره خود را وارد کنید',
             )
+            return self.PHONE_NUMBER
+
         return ConversationHandler.END
+
+
+    
+
         
 
     def cancel(self, update: Update, _: CallbackContext) -> int:
