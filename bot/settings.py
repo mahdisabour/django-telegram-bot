@@ -29,12 +29,15 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+print(BASE_DIR, '*******************************************************')
 
 # Application definition
 
 INSTALLED_APPS = [
     
-    'django.contrib.admin',
+    # 'django.contrib.admin',
+    'material',
+    'material.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -176,3 +179,16 @@ app.conf.timezone = 'UTC'
 BOT_URL = "Amirbayat_bot"
 # telegram Token
 TOKEN = '1744267923:AAFfKUpT4IkAAa76trvzggrTEmjq9dw2vWo'
+
+
+
+# django material admin
+
+MATERIAL_ADMIN_SITE = {
+    'HEADER':  'Telegram bot administration',  # Admin site header
+    'TITLE':  'Django Telegram Bot',  # Admin site title
+    'SHOW_THEMES':  True,  #  Show default admin themes button
+    'TRAY_REVERSE': True,  # Hide object-tools and additional-submit-line by default
+    'NAVBAR_REVERSE': True,  # Hide side navbar by default
+    'SHOW_COUNTS': True, # Show instances counts for each model
+}

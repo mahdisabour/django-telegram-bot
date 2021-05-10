@@ -12,7 +12,6 @@ from django.conf import settings
 import logging
 import json
 import datetime 
-from dateutil.relativedelta import relativedelta
 
 # Url for telegram bot
 botUrl = settings.BOT_URL
