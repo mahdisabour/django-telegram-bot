@@ -1,0 +1,101 @@
+version: '3.7'
+
+services:
+    db:
+        image: postgres:13.0-alpine
+        environment:
+          - POSTGRES_DB=postgres
+          - POSTGRES_USER=mehdi
+          - POSTGRES_PASSWORD=password
+        ports:
+          - "5432:5432"
+        volumes:
+          - postgres_data:/var/lib/postgresql/data/
+
+
+    redis:
+        image: redis:latest
+        ports:
+          - "6379:6379"
+
+
+    telegramsitebot:
+      image: app
+      command: python manage.py runsitebot
+        
+      depends_on: 
+        - db
+        - web
+        - redis
+
+      environment:
+        - DB_HOST=db
+        - DB_NAME=postgres
+        - DB_USER=mehdi
+        - DB_PASS=password
+
+      volumes: 
+        - .:/home/app/web
+
+            
+    web:
+        image: app
+        command: > 
+          sh -c "python manage.py makemigrations && python manage.py migrate && daphne -b 0.0.0.0 -p 8000 bot.asgi:application"
+        volumes:
+            - static_volume:/home/app/web/staticfiles
+            - .:/home/app/web
+        ports:
+            - "8000:8000"
+        environment:
+          - DB_HOST=db
+          - DB_NAME=postgres
+          - DB_USER=mehdi
+          - DB_PASS=password
+          - REDIS_HOST=redis
+        depends_on:
+          - db
+          - redis
+        links: 
+          - redis
+
+    celery:
+        restart: always
+        image: app
+        command: celery -A bot worker --loglevel=debug --concurrency=8
+        depends_on:
+          - db
+          - redis
+          - web
+        volumes:
+          - celery_data:/var/lib/celery/data/
+          - .:/home/app/web
+        environment:
+          - DB_HOST=db
+          - DB_NAME=postgres
+          - DB_USER=mehdi
+          - DB_PASS=password
+
+
+    celery-beat:
+        restart: always
+        image: app
+        command: celery -A bot beat -l info
+        depends_on:
+          - db
+          - redis
+          - web
+        volumes:
+          - celery_data:/var/lib/celery/data/
+          - .:/home/app/web
+
+        environment:
+          - DB_HOST=db
+          - DB_NAME=postgres
+          - DB_USER=mehdi
+          - DB_PASS=password
+
+volumes:
+    postgres_data:
+    static_volume:
+    celery_data:
