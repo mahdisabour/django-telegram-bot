@@ -19,23 +19,23 @@ services:
           - "6379:6379"
 
 
-    # telegramsitebot:
-    #   image: app
-    #   command: python manage.py runsitebot
+    telegramsitebot:
+      image: app
+      command: python manage.py runsitebot
         
-    #   depends_on: 
-    #     - db
-    #     - web
-    #     - redis
+      depends_on: 
+        - db
+        - web
+        - redis
 
-    #   environment:
-    #     - DB_HOST=db
-    #     - DB_NAME=postgres
-    #     - DB_USER=mehdi
-    #     - DB_PASS=password
+      environment:
+        - DB_HOST=db
+        - DB_NAME=postgres
+        - DB_USER=mehdi
+        - DB_PASS=password
 
-    #   volumes: 
-    #     - .:/home/app/web
+      volumes: 
+        - .:/home/app/web
 
             
     web:
@@ -94,6 +94,17 @@ services:
           - DB_NAME=postgres
           - DB_USER=mehdi
           - DB_PASS=password
+
+
+    nginx:
+      build: nginx
+      volumes:
+        - static_volume:/home/app/web/staticfiles
+        - .:/home/app/web
+      ports:
+        - 80:80
+      depends_on:
+        - web
 
 volumes:
     postgres_data:

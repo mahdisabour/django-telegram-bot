@@ -29,7 +29,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-print(BASE_DIR, '*******************************************************')
 
 # Application definition
 
@@ -179,6 +178,7 @@ app.conf.timezone = 'UTC'
 BOT_URL = "Amirbayat_bot"
 # telegram Token
 TOKEN = '1744267923:AAFfKUpT4IkAAa76trvzggrTEmjq9dw2vWo'
+
 
 
 

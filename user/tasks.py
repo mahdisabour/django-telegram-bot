@@ -46,7 +46,11 @@ def overFlowTime(date):
 
 @app.task
 def sendExpirationMsgToUser(chat_id):
-    msg = "زمان استفاده از محصول شما رو به پایان است"
+    msg = """
+    زمان استفاده از محصول شما رو به پایان است.
+    لطفا برای تمدید به سایت amirbayat.com مراجعه کنید
+    
+    """
     sendMessageFromBot.delay(chat_id=chat_id, msg=msg)
 
 
