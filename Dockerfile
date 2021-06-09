@@ -4,9 +4,9 @@ FROM python:3.8.5-alpine
 RUN mkdir -p /home/app
 
 # create the app user
-# RUN addgroup -S app && adduser -S app -G app
+RUN addgroup -S app && adduser -S app -G app
 # create the appropriate directories
-ENV HOME=/home/app
+# ENV HOME=/home/app
 ENV APP_HOME=/home/app/web
 RUN mkdir $APP_HOME
 RUN mkdir $APP_HOME/staticfiles
@@ -45,8 +45,8 @@ RUN apk update \
     && apk del .build-deps
 COPY . $APP_HOME
 
-# RUN chown -R app:app $APP_HOME
+RUN chown -R app:app $APP_HOME
 # RUN chown -R app:app $HOME
 
 
-# USER app
+USER app
