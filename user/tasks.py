@@ -4,12 +4,12 @@ import telegram
 from django.conf import settings
 import datetime
 
-from .models import SiteBotMember, ProductPlan
+import user.models as userModels
 
 
 @app.task
 def sendPeriodicMessage():
-    for instance in SiteBotMember.objects.values('chat_id').distinct():
+    for instance in userModels.SiteBotMember.objects.values('chat_id').distinct():
         if (instance['chat_id']):
             sendMessageFromBot.delay(instance['chat_id'])
 
@@ -23,7 +23,7 @@ def sendMessageFromBot(chat_id, msg="خوشحالیم که مارا انتخاب
 # cheking expirations and send them message
 @app.task
 def checkExpireDate():
-    for user in SiteBotMember.objects.all():
+    for user in userModels.SiteBotMember.objects.all():
         if not hasValidExpire(user.orders.first().expiration_date): # send message to user if True
             sendExpirationMsgToUser.delay(chat_id=user.chat_id)
         if overFlowTime(user.orders.first().expiration_date): # delete user if true
